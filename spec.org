@@ -1,0 +1,23 @@
+* Purpose
+This program will help a user learn the gender of german words through familiarity and repetition. By changing the case of the article, or even changing the article, you can see the word in many different contexts. This should help with getting used to all the different forms, since they sometimes overlap (e.g. Nominative "die Frau" but dative "der Frau").
+
+* Definitions
+word-pack: A set of words to be tested on. Words should be split up in to sets of some size, like how in a language textbook they would be split among many lessons. Probably between 12-20+ words (I like 16), maybe user configurable.
+
+* User Story: Starting a quiz
+I should see an interface that lets me choose which article (or random), which case (or random), and a word-pack.
+When selecting a word-pack, I should see some indication of my progress on all word-packs
+I should see a button to start the test. When I click it, the test should start.
+
+* User Story: Taking a quiz
+For each word I should see three answer buttons.
+Each answer button should show the gendered article for the word and the case.
+The buttons should be ordered (masculine feminine neuter). (It might be cool to randomize these, or somehow mix them up so that you really have to know).
+Above the buttons should be, in prominent text, the case of the noun being presented.
+Below the answers should be a log, that will show results of the answers. This includes:
+- If you guessed wrong, what was the correct answer.
+- Helpful info about patterns in german noun genders.
+
+* User Story: Quiz results
+When the quiz is over, the question section of the page should be replaced with a summary, showing what fraction of the questions were answered correctly.
+The log section should still be visible.
