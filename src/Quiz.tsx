@@ -6,9 +6,8 @@ import {
     Case,
     Word,
     Article,
-    aconj,
     getArticlesForCase,
-    checkGender,
+    ArticleConjugation,
 } from './prototype';
 
 interface QuizProps {
@@ -17,22 +16,60 @@ interface QuizProps {
     kasus: Case
 }
 
+interface QuizQuestionState {
+    word: Word,
+    conjugations: ArticleConjugation[],
+    userAnswer: ArticleConjugation | null
+}
+
+type QuizState = QuizQuestionState[];
+
 const Quiz: React.FunctionComponent<QuizProps> = ({
     wordList,
     article,
     kasus
 }: QuizProps) => {
     const getArticles = (article: Article) => getArticlesForCase(kasus, article);
-    const articles = getArticles(article);
-    console.log(articles);
-    const questions = wordList.map(({ word }) => {
+
+    const conjugations = getArticles(article);
+    // TODO if there are two articles that are written the same, remove the
+    // incorrect answer
+
+    const initialState: QuizState = wordList.map(word => {
+        return {
+            userAnswer: null,
+            conjugations,
+            word,
+        };
+    });
+
+    const [quizState, setQuizState] = React.useState(initialState);
+
+    const answerQuestion = (index: number) => {
+        return (answer: ArticleConjugation) => {
+            console.log(`question: ${index} answered with ${answer.name}`);
+            quizState[index] = {
+                ...quizState[index],
+                userAnswer: answer,
+            };
+
+            setQuizState(quizState);
+        };
+    };
+
+    const questions = quizState.map(({ word }, index) => {
         return (
-            <QuizQuestion key={word} word={word} answers={articles}></QuizQuestion>
+            <QuizQuestion
+                key={index}
+                word={word}
+                answers={conjugations}
+                questionAnswered={answerQuestion(index)}>
+            </QuizQuestion>
         );
     });
 
     return (
-        <div>
+        <div className="quiz">
             {questions}
         </div>
     );

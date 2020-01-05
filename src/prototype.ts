@@ -13,7 +13,7 @@ export enum Case {
 }
 
 export interface Word {
-    word: string,
+    name: string,
     gender: Gender,
 }
 
@@ -29,16 +29,16 @@ export type ArticleDef = [
 export interface ArticleConjugation {
     gender: Gender,
     kasus: Case,
-    word: string
+    name: string
 }
 
 // export type Article = ArticleConjugation[];
 
 interface ArticleForCase {
-    readonly [Case.Nominative]: string,
-    readonly [Case.Accusative]: string,
-    readonly [Case.Dative]: string,
-    readonly [Case.Genative]: string,
+    readonly [Case.Nominative]: ArticleConjugation,
+    readonly [Case.Accusative]: ArticleConjugation,
+    readonly [Case.Dative]: ArticleConjugation,
+    readonly [Case.Genative]: ArticleConjugation,
 }
 
 // interface ArticleForCase {
@@ -63,28 +63,92 @@ export function makeArticle([
     {
         return {
             [Gender.Masculine]: {
-                [Case.Nominative]: mn,
-                [Case.Accusative]: ma,
-                [Case.Dative]: md,
-                [Case.Genative]: mg,
+                [Case.Nominative]: {
+                    gender: Gender.Masculine,
+                    kasus: Case.Nominative,
+                    name: mn
+                },
+                [Case.Accusative]: {
+                    gender: Gender.Masculine,
+                    kasus: Case.Accusative,
+                    name: ma
+                },
+                [Case.Dative]: {
+                    gender: Gender.Masculine,
+                    kasus: Case.Dative,
+                    name: md
+                },
+                [Case.Genative]: {
+                    gender: Gender.Masculine,
+                    kasus: Case.Genative,
+                    name: mg
+                },
             },
             [Gender.Feminine]: {
-                [Case.Nominative]: fn,
-                [Case.Accusative]: fa,
-                [Case.Dative]: fd,
-                [Case.Genative]: fg,
+                [Case.Nominative]: {
+                    gender: Gender.Feminine,
+                    kasus: Case.Nominative,
+                    name: fn
+                },
+                [Case.Accusative]: {
+                    gender: Gender.Feminine,
+                    kasus: Case.Accusative,
+                    name: fa
+                },
+                [Case.Dative]: {
+                    gender: Gender.Feminine,
+                    kasus: Case.Dative,
+                    name: fd
+                },
+                [Case.Genative]: {
+                    gender: Gender.Feminine,
+                    kasus: Case.Genative,
+                    name: fg
+                },
             },
             [Gender.Neuter]: {
-                [Case.Nominative]: nn,
-                [Case.Accusative]: na,
-                [Case.Dative]: nd,
-                [Case.Genative]: ng,
+                [Case.Nominative]: {
+                    gender: Gender.Neuter,
+                    kasus: Case.Nominative,
+                    name: nn
+                },
+                [Case.Accusative]: {
+                    gender: Gender.Neuter,
+                    kasus: Case.Accusative,
+                    name: na
+                },
+                [Case.Dative]: {
+                    gender: Gender.Neuter,
+                    kasus: Case.Dative,
+                    name: nd
+                },
+                [Case.Genative]: {
+                    gender: Gender.Neuter,
+                    kasus: Case.Genative,
+                    name: ng
+                },
             },
             [Gender.Plural]: {
-                [Case.Nominative]: pn,
-                [Case.Accusative]: pa,
-                [Case.Dative]: pd,
-                [Case.Genative]: pg,
+                [Case.Nominative]: {
+                    gender: Gender.Plural,
+                    kasus: Case.Nominative,
+                    name: pn
+                },
+                [Case.Accusative]: {
+                    gender: Gender.Plural,
+                    kasus: Case.Accusative,
+                    name: pa
+                },
+                [Case.Dative]: {
+                    gender: Gender.Plural,
+                    kasus: Case.Dative,
+                    name: pd
+                },
+                [Case.Genative]: {
+                    gender: Gender.Plural,
+                    kasus: Case.Genative,
+                    name: pg
+                },
             }
         }
     }
@@ -111,12 +175,12 @@ export const INDEFINITE: Article = makeArticle([
 // conjugate(INDEFINITE, Gender.Neuter, Case.Dative);
 
 export const AUTO: Word = {
-    word: 'Auto',
+    name: 'Auto',
     gender: Gender.Neuter,
 }
 
 export const FRAU: Word = {
-    word: 'Frau',
+    name: 'Frau',
     gender: Gender.Feminine,
 }
 
@@ -126,11 +190,9 @@ export const FRAU: Word = {
 //     // return conjugatedArticle;
 // }
 
-// console.log(conjugateWord(frau, Case.Dative));
-
-function aconj(gender: Gender, kasus: Case, article: Article): string {
-    return article[gender][kasus];
-}
+// function aconj(gender: Gender, kasus: Case, article: Article): string {
+//     return article[gender][kasus];
+// }
 
 
 // Given a case and an article definition, return the articles for all genders in that
@@ -154,7 +216,7 @@ function checkGender({ gender: wordGender }: Word, articleGender: Gender): boole
 // }
 
 export {
-    aconj,
+    // aconj,
     getArticlesForCase,
     checkGender,
     // getArticles

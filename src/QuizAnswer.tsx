@@ -6,8 +6,8 @@ import {
 } from './prototype';
 
 interface QuizAnswerProps {
-    /*     onclick:  */
-    answer: ArticleConjugation
+    answer: ArticleConjugation,
+    answerSelected: () => void
 };
 
 // const QuizAnswer: React.FunctionComponent<QuizAnswerProps> = ({
@@ -17,11 +17,12 @@ interface QuizAnswerProps {
 //     }
 // }) => {
 const QuizAnswer: React.FunctionComponent<QuizAnswerProps> = ({
-    answer: answer
+    answer,
+    answerSelected,
 }) => {
     return (
-        <button onClick={() => console.log(`${Gender[answer.gender]}: ${answer}`)}>
-            {answer.word}
+        <button onClick={answerSelected}>
+            {answer.name}
         </button>
     );
 };
