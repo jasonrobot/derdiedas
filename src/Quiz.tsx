@@ -1,9 +1,11 @@
 import React from 'react';
+import { curry } from 'ramda';
 
 import QuizQuestion from './QuizQuestion';
 
 import {
     Case,
+    Gender,
     Word,
     Article,
     getArticlesForCase,
@@ -45,17 +47,16 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
 
     const [quizState, setQuizState] = React.useState(initialState);
 
-    const answerQuestion = (index: number) => {
-        return (answer: ArticleConjugation) => {
-            console.log(`question: ${index} answered with ${answer.name}`);
+    const answerQuestion = curry(
+        (index: number, answer: ArticleConjugation) => {
+            // console.log(`question: ${index} answered with ${Case[answer.kasus]} ${Gender[answer.gender]} ${answer.name}`);
             quizState[index] = {
                 ...quizState[index],
                 userAnswer: answer,
             };
-
             setQuizState(quizState);
-        };
-    };
+        }
+    );
 
     const questions = quizState.map(({ word }, index) => {
         return (
@@ -68,9 +69,12 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
         );
     });
 
+
+
     return (
         <div className="quiz">
             {questions}
+
         </div>
     );
 }
