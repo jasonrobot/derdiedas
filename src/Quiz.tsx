@@ -50,30 +50,35 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
     const answerQuestion = curry(
         (index: number, answer: ArticleConjugation) => {
             // console.log(`question: ${index} answered with ${Case[answer.kasus]} ${Gender[answer.gender]} ${answer.name}`);
-            quizState[index] = {
+            const newQuizState: QuizState = [...quizState];
+            newQuizState[index] = {
                 ...quizState[index],
                 userAnswer: answer,
             };
-            setQuizState(quizState);
+            setQuizState(newQuizState);
         }
     );
 
-    const questions = quizState.map(({ word }, index) => {
-        return (
-            <QuizQuestion
-                key={index}
-                word={word}
-                answers={conjugations}
-                questionAnswered={answerQuestion(index)}>
-            </QuizQuestion>
-        );
-    });
+    const questions = () => {
+        return quizState.map(({ word, userAnswer }, index) => {
 
+            const isAnswered = userAnswer !== null;
 
+            return (
+                <QuizQuestion
+                    key={word.name}
+                    word={word}
+                    answers={conjugations}
+                    isAnswered={isAnswered}
+                    questionAnswered={answerQuestion(index)}>
+                </QuizQuestion>
+            );
+        });
+    };
 
     return (
         <div className="quiz">
-            {questions}
+            {questions()}
 
         </div>
     );

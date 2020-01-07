@@ -9,14 +9,16 @@ import {
 
 interface QuizQuestionProps {
     word: Word,
+    isAnswered: boolean,
     answers: ArticleConjugation[],
-    questionAnswered: (answer: ArticleConjugation) => void
+    questionAnswered: (answer: ArticleConjugation) => void,
 }
 
 const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
     word,
+    isAnswered,
     answers,
-    questionAnswered
+    questionAnswered,
 }: QuizQuestionProps) => {
 
     const answerSelected = (article: ArticleConjugation) => {
@@ -29,6 +31,7 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
         return (
             <QuizAnswer
                 answer={article}
+                isAnswered={isAnswered}
                 key={index}
                 answerSelected={answerSelected(article)}>
                 {article.name}

@@ -7,6 +7,7 @@ import {
 
 interface QuizAnswerProps {
     answer: ArticleConjugation,
+    isAnswered: boolean,
     answerSelected: () => void
 };
 
@@ -18,10 +19,13 @@ interface QuizAnswerProps {
 // }) => {
 const QuizAnswer: React.FunctionComponent<QuizAnswerProps> = ({
     answer,
+    isAnswered,
     answerSelected,
 }) => {
     return (
-        <button onClick={answerSelected}>
+        <button
+            disabled={isAnswered}
+            onClick={answerSelected}>
             {answer.name}
         </button>
     );
