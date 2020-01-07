@@ -24,7 +24,10 @@ interface QuizQuestionState {
     userAnswer: ArticleConjugation | null
 }
 
-type QuizState = QuizQuestionState[];
+interface QuizState {
+    currentQuestion: number,
+    questions: QuizQuestionState[]
+};
 
 const Quiz: React.FunctionComponent<QuizProps> = ({
     wordList,
@@ -37,51 +40,76 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
     // TODO if there are two articles that are written the same, remove the
     // incorrect answer
 
-    const initialState: QuizState = wordList.map(word => {
-        return {
-            userAnswer: null,
-            conjugations,
-            word,
-        };
-    });
+    const initialState: QuizState = {
+        currentQuestion: 0,
+        questions: [
+            ...wordList.map(word => {
+                return {
+                    userAnswer: null,
+                    conjugations,
+                    word,
+                };
+            }),
+        ]
+    };
 
     const [quizState, setQuizState] = React.useState(initialState);
 
     const answerQuestion = curry(
         (index: number, answer: ArticleConjugation) => {
             // console.log(`question: ${index} answered with ${Case[answer.kasus]} ${Gender[answer.gender]} ${answer.name}`);
-            const newQuizState: QuizState = [...quizState];
-            newQuizState[index] = {
-                ...quizState[index],
+            const newQuizState: QuizState = {
+                currentQuestion: quizState.currentQuestion + 1,
+                questions: [...quizState.questions],
+            };
+            newQuizState.questions[index] = {
+                ...quizState.questions[index],
                 userAnswer: answer,
             };
             setQuizState(newQuizState);
         }
     );
 
-    const questions = () => {
-        return quizState.map(({ word, userAnswer }, index) => {
+    if (quizState.currentQuestion < quizState.questions.length) {
+        const {
+            word,
+            userAnswer
+        } = quizState.questions[quizState.currentQuestion];
 
-            const isAnswered = userAnswer !== null;
-
-            return (
+        return (
+            <div className="quiz">
                 <QuizQuestion
                     key={word.name}
                     word={word}
                     answers={conjugations}
-                    isAnswered={isAnswered}
-                    questionAnswered={answerQuestion(index)}>
+                    userAnswer={userAnswer}
+                    questionAnswered={answerQuestion(quizState.currentQuestion)}>
                 </QuizQuestion>
-            );
-        });
-    };
+            </div>
+        );
+    } else {
+        const questions = () => {
+            return quizState.questions.map(({ word, userAnswer }, index) => {
 
-    return (
-        <div className="quiz">
-            {questions()}
+                return (
+                    <QuizQuestion
+                        key={word.name}
+                        word={word}
+                        answers={conjugations}
+                        userAnswer={userAnswer}
+                        questionAnswered={answerQuestion(index)}>
+                    </QuizQuestion>
+                );
+            });
+        };
 
-        </div>
-    );
+        return (
+            <div className="quiz">
+                {questions()}
+
+            </div>
+        );
+    }
 }
 
 export default Quiz;

@@ -16,3 +16,11 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
+
+[data-is-correct="true"] {
+    border: 2px solid green;
+}
+
+[data-is-correct="false"] {
+    border: 2px solid red;
+}

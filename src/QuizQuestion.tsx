@@ -9,14 +9,14 @@ import {
 
 interface QuizQuestionProps {
     word: Word,
-    isAnswered: boolean,
+    userAnswer: ArticleConjugation | null,
     answers: ArticleConjugation[],
     questionAnswered: (answer: ArticleConjugation) => void,
 }
 
 const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
     word,
-    isAnswered,
+    userAnswer,
     answers,
     questionAnswered,
 }: QuizQuestionProps) => {
@@ -26,6 +26,8 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
             questionAnswered(article);
         }
     }
+
+    const isAnswered = userAnswer !== null;
 
     const answersMarkup = answers.map((article: ArticleConjugation, index: number) => {
         return (
@@ -39,8 +41,14 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
         );
     });
 
+    const isCorrectAttr = {
+        'data-is-correct': userAnswer !== null ? userAnswer.gender === word.gender : {}
+    };
+
     return (
-        <div className="question">
+        <div
+            className="question"
+            {...isCorrectAttr}>
             <div className="answers">
                 {answersMarkup}
             </div>
