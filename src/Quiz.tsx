@@ -54,27 +54,31 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
     };
 
     const [quizState, setQuizState] = React.useState(initialState);
+    const {
+        currentQuestion,
+        questions,
+    }: QuizState = quizState;
 
     const answerQuestion = curry(
         (index: number, answer: ArticleConjugation) => {
             // console.log(`question: ${index} answered with ${Case[answer.kasus]} ${Gender[answer.gender]} ${answer.name}`);
             const newQuizState: QuizState = {
-                currentQuestion: quizState.currentQuestion + 1,
-                questions: [...quizState.questions],
+                currentQuestion: currentQuestion + 1,
+                questions: [...questions],
             };
             newQuizState.questions[index] = {
-                ...quizState.questions[index],
+                ...questions[index],
                 userAnswer: answer,
             };
             setQuizState(newQuizState);
         }
     );
 
-    if (quizState.currentQuestion < quizState.questions.length) {
+    if (currentQuestion < questions.length) {
         const {
             word,
             userAnswer
-        } = quizState.questions[quizState.currentQuestion];
+        } = questions[currentQuestion];
 
         return (
             <div className="quiz">
@@ -83,13 +87,13 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
                     word={word}
                     answers={conjugations}
                     userAnswer={userAnswer}
-                    questionAnswered={answerQuestion(quizState.currentQuestion)}>
+                    questionAnswered={answerQuestion(currentQuestion)}>
                 </QuizQuestion>
             </div>
         );
     } else {
-        const questions = () => {
-            return quizState.questions.map(({ word, userAnswer }, index) => {
+        const questionResults = () => {
+            return questions.map(({ word, userAnswer }, index) => {
 
                 return (
                     <QuizQuestion
@@ -105,8 +109,7 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
 
         return (
             <div className="quiz">
-                {questions()}
-
+                {questionResults()}
             </div>
         );
     }
