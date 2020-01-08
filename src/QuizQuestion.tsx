@@ -1,6 +1,6 @@
 import React from 'react';
 
-import QuizAnswer from './QuizAnswer';
+// import QuizAnswer from './QuizAnswer';
 
 import {
     ArticleConjugation,
@@ -31,13 +31,12 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
 
     const answersMarkup = answers.map((article: ArticleConjugation, index: number) => {
         return (
-            <QuizAnswer
-                answer={article}
-                isAnswered={isAnswered}
+            <button
                 key={index}
-                answerSelected={answerSelected(article)}>
+                disabled={isAnswered}
+                onClick={answerSelected(article)}>
                 {article.name}
-            </QuizAnswer>
+            </button>
         );
     });
 

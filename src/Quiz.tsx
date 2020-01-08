@@ -61,7 +61,6 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
 
     const answerQuestion = curry(
         (index: number, answer: ArticleConjugation) => {
-            // console.log(`question: ${index} answered with ${Case[answer.kasus]} ${Gender[answer.gender]} ${answer.name}`);
             const newQuizState: QuizState = {
                 currentQuestion: currentQuestion + 1,
                 questions: [...questions],
@@ -94,7 +93,6 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
     } else {
         const questionResults = () => {
             return questions.map(({ word, userAnswer }, index) => {
-
                 return (
                     <QuizQuestion
                         key={word.name}

@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-    Gender,
-    ArticleConjugation
-} from './prototype';
+import { ArticleConjugation } from './prototype';
 
 interface QuizAnswerProps {
     answer: ArticleConjugation,
