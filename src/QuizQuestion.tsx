@@ -21,22 +21,14 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
     questionAnswered,
 }: QuizQuestionProps) => {
 
-    const answerSelected = (article: ArticleConjugation) => {
-        return () => {
-            questionAnswered(article);
-        }
-    }
-
-    const isAnswered = userAnswer !== null;
-
     const answersMarkup = answers.map((article: ArticleConjugation, index: number) => {
         return (
             <button
                 key={index}
-                disabled={isAnswered}
-                onClick={answerSelected(article)}>
+                disabled={(userAnswer !== null)}
+                onClick={() => questionAnswered(article)}>
                 {article.name}
-            </button>
+            </button >
         );
     });
 
