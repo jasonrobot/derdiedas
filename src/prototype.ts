@@ -17,6 +17,19 @@ export interface Word {
     gender: Gender,
 }
 
+function strToGender(gender: string): Gender {
+    if (gender == 'm') return Gender.Masculine;
+    if (gender == 'f') return Gender.Feminine;
+    return Gender.Neuter;
+}
+
+export function makeWord([name, gender]: [string, string]): Word {
+    return {
+        gender: strToGender(gender),
+        name
+    };
+}
+
 // type Article = Record<Gender, Record<Case, string>>;
 
 export type ArticleDef = [

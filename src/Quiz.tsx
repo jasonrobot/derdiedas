@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { curry } from 'ramda';
 
 import QuizQuestion from './QuizQuestion';
 
 import {
     Case,
-    Gender,
     Word,
     Article,
     getArticlesForCase,
     ArticleConjugation,
+    makeWord,
 } from './prototype';
 
 interface QuizProps {
@@ -28,6 +28,18 @@ interface QuizState {
     currentQuestion: number,
     questions: QuizQuestionState[]
 };
+
+type WordData = [string, string][];
+
+async function fetchWordData(): Promise<WordData> {
+    const response = await fetch('http://localhost:8080/nouns3.json')
+    if (!response.ok) {
+        throw new Error(response.statusText)
+    }
+    return response.json() as Promise<WordData>;
+}
+
+const NEXT_QUESTION_DELAY = 1500;
 
 const Quiz: React.FunctionComponent<QuizProps> = ({
     wordList,
@@ -53,64 +65,66 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
         ]
     };
 
-    const [quizState, setQuizState] = React.useState(initialState);
+    const [quizState, setQuizState] = useState(initialState);
     const {
         currentQuestion,
         questions,
     }: QuizState = quizState;
 
+    useEffect(() => {
+        fetchWordData().then((words) => {
+            const questions = words.map(word => {
+                return {
+                    userAnswer: null,
+                    word: makeWord(word),
+                    conjugations
+                };
+            });
+            setQuizState({
+                currentQuestion: 0,
+                questions
+            });
+        });
+    }, []);
+
     const answerQuestion = curry(
         (index: number, answer: ArticleConjugation) => {
-            const newQuizState: QuizState = {
-                currentQuestion: currentQuestion + 1,
+            const nextQuizState: QuizState = {
+                currentQuestion,
                 questions: [...questions],
             };
-            newQuizState.questions[index] = {
+            nextQuizState.questions[index] = {
                 ...questions[index],
                 userAnswer: answer,
             };
-            setQuizState(newQuizState);
+            setQuizState(nextQuizState);
+            setTimeout(() => {
+                const nextQuestion = {
+                    ...nextQuizState,
+                    currentQuestion: currentQuestion + 1,
+                };
+                setQuizState(nextQuestion);
+            }, NEXT_QUESTION_DELAY);
         }
     );
 
-    if (currentQuestion < questions.length) {
-        const {
-            word,
-            userAnswer
-        } = questions[currentQuestion];
+    const {
+        word,
+        userAnswer
+    } = questions[currentQuestion];
 
-        return (
-            <div className="quiz">
-                <QuizQuestion
-                    key={word.name}
-                    word={word}
-                    answers={conjugations}
-                    userAnswer={userAnswer}
-                    questionAnswered={answerQuestion(currentQuestion)}>
-                </QuizQuestion>
-            </div>
-        );
-    } else {
-        const questionResults = () => {
-            return questions.map(({ word, userAnswer }, index) => {
-                return (
-                    <QuizQuestion
-                        key={word.name}
-                        word={word}
-                        answers={conjugations}
-                        userAnswer={userAnswer}
-                        questionAnswered={answerQuestion(index)}>
-                    </QuizQuestion>
-                );
-            });
-        };
+    return (
+        <div className="quiz">
+            <QuizQuestion
+                key={word.name}
+                word={word}
+                answers={conjugations}
+                userAnswer={userAnswer}
+                questionAnswered={answerQuestion(currentQuestion)}>
+            </QuizQuestion>
+        </div>
+    );
 
-        return (
-            <div className="quiz">
-                {questionResults()}
-            </div>
-        );
-    }
 }
 
 export default Quiz;
