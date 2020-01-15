@@ -12,6 +12,7 @@ interface QuizQuestionProps {
     userAnswer: ArticleConjugation | null,
     answers: ArticleConjugation[],
     questionAnswered: (answer: ArticleConjugation) => void,
+    key?: string
 }
 
 const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
@@ -48,4 +49,7 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
     );
 }
 
-export default QuizQuestion;
+export default function(props: QuizQuestionProps, ...children: React.ReactNode[]) {
+    return React.createElement(QuizQuestion, props, ...children);
+}
+//export default QuizQuestion;

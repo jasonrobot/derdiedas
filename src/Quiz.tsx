@@ -113,17 +113,27 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
         userAnswer
     } = questions[currentQuestion];
 
-    return (
-        <div className="quiz">
-            <QuizQuestion
-                key={word.name}
-                word={word}
-                answers={conjugations}
-                userAnswer={userAnswer}
-                questionAnswered={answerQuestion(currentQuestion)}>
-            </QuizQuestion>
-        </div>
-    );
+    // return (
+    //     <div className="quiz">
+    //         <QuizQuestion
+    //             key={word.name}
+    //             word={word}
+    //             answers={conjugations}
+    //             userAnswer={userAnswer}
+    //             questionAnswered={answerQuestion(currentQuestion)}>
+    //         </QuizQuestion>
+    //     </div>
+    // );
+
+    return React.createElement('div', { className: 'quiz' }, [
+        QuizQuestion({
+            key: word.name,
+            answers: conjugations,
+            questionAnswered: answerQuestion(currentQuestion),
+            word,
+            userAnswer,
+        })
+    ]);
 
 }
 

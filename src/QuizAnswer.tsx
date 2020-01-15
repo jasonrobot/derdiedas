@@ -28,4 +28,6 @@ const QuizAnswer: React.FunctionComponent<QuizAnswerProps> = ({
     );
 };
 
-export default QuizAnswer;
+export default function(props: QuizAnswerProps, ...children: React.ReactNode[]) {
+    return React.createElement(QuizAnswer, props, ...children);
+}
