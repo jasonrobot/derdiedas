@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 import {
+    makeWord,
     Case,
+    Word,
+    Article,
     FRAU,
     AUTO,
     DEFINITE
@@ -12,11 +15,27 @@ import MainMenu from './MainMenu';
 import Quiz from './Quiz';
 
 const App: React.FC = () => {
+
+    const [appState, setAppState] = useState<AppState>(INITIAL_STATE);
+
+    useEffect(() => {
+        fetchWordData().then((wordPacks: [[Word]]) => {
+            setAppState({
+                ...appState,
+                wordPacks
+            });
+        });
+    }, []);
+
     return (
-        <div className="App">
-            <MainMenu></MainMenu>
-            <Quiz wordList={[FRAU, AUTO]} article={DEFINITE} kasus={Case.Nominative}></Quiz>
-        </div >
+        React.createElement('div', { className: 'quiz' }, [
+            MainMenu({}),
+            Quiz({
+                wordPack: [FRAU, AUTO],
+                article: DEFINITE,
+                kasus: Case.Nominative,
+            })
+        ])
     );
 }
 
