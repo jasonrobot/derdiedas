@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { curry } from 'ramda';
+import { connect } from 'react-redux';
+import { pick } from 'ramda';
 
 import QuizQuestion from './QuizQuestion';
 
@@ -12,56 +13,54 @@ import {
     ArticleConjugation,
 } from './prototype';
 
+import {
+    answerQuestion,
+} from './actions';
+
 interface QuizProps {
-    wordPack: Word[],
     article: Article,
-    kasus: Case
+    kasus: Case,
+    currentQuestion: Word,
 }
 
 const NEXT_QUESTION_DELAY = 1000;
 
+// const mapStateToProps = pick(['article', 'kasus', 'currentQuestion']);
+
+function mapStateToProps(state: any) {
+    return {
+        article: state.article,
+        kasus: state.kasus,
+        currentQuestion: state.currentQuestion,
+    };
+}
+
+
+// function mapDispatchToProps(dispatch) {
+//     return {
+//         // ¯\_(ツ)_/¯
+//     };
+// }
+
 const Quiz: React.FunctionComponent<QuizProps> = ({
-    wordPack,
     article,
-    kasus
+    kasus,
+    currentQuestion
 }: QuizProps) => {
 
-    const answerQuestion = curry(
-        (index: number, answer: ArticleConjugation) => {
-            const nextQuizState: QuizState = {
-                currentQuestion,
-                questions: [...questions],
-            };
-            nextQuizState.questions[index] = {
-                ...questions[index],
-                userAnswer: answer,
-            };
-            setQuizState(nextQuizState);
-            setTimeout(() => {
-                const nextQuestion = {
-                    ...nextQuizState,
-                    currentQuestion: currentQuestion + 1,
-                };
-                setQuizState(nextQuestion);
-            }, NEXT_QUESTION_DELAY);
-        }
-    );
-
-    const {
-        word,
-        userAnswer
-    } = questions[currentQuestion];
+    const answers = getArticlesForCase(article, kasus);
 
     return React.createElement('div', { className: 'quiz' }, [
         QuizQuestion({
-            key: word.name,
-            answers: conjugations,
-            questionAnswered: answerQuestion(currentQuestion),
-            word,
-            userAnswer,
+            key: currentQuestion.name,
+            currentQuestion,
+            answers
         }),
-        ...recentQuestions,
+        // ...recentQuestions,
     ]);
 }
 
-export default Quiz;
+export default connect(
+    mapStateToProps,
+    // mapDispatchToProps,
+)(Quiz);

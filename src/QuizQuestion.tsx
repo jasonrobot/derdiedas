@@ -1,25 +1,35 @@
 import React from 'react';
-
+import {
+    always,
+    equals,
+    ifElse,
+    not,
+} from 'ramda';
 // import QuizAnswer from './QuizAnswer';
 
 import {
     ArticleConjugation,
+    Gender,
     Word
 } from './prototype';
 
+import {
+    answerQuestion,
+} from './actions';
+
 interface QuizQuestionProps {
-    word: Word,
-    userAnswer: ArticleConjugation | null,
+    currentQuestion: Word,
     answers: ArticleConjugation[],
-    questionAnswered: (answer: ArticleConjugation) => void,
-    key?: string
+    userAnswer?: Gender,
+    key?: string,
+    dispatch?: any, // FIXME NO ANY
 }
 
 const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
-    word,
-    userAnswer,
+    currentQuestion,
     answers,
-    questionAnswered,
+    userAnswer,
+    dispatch
 }: QuizQuestionProps) => {
 
     const answersMarkup = answers.map((article: ArticleConjugation, index: number) => {
@@ -27,14 +37,18 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
             <button
                 key={index}
                 disabled={(userAnswer !== null)}
-                onClick={() => questionAnswered(article)}>
+                onClick={() => dispatch(answerQuestion(article.gender))}>
                 {article.name}
             </button >
         );
     });
 
     const isCorrectAttr = {
-        'data-is-correct': userAnswer !== null ? userAnswer.gender === word.gender : {}
+        'data-is-correct': ifElse(
+            equals(undefined),
+            equals(currentQuestion.gender),
+            always({}),
+        )(userAnswer),
     };
 
     return (
@@ -44,12 +58,12 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
             <div className="answers">
                 {answersMarkup}
             </div>
-            {word.name}
+            {currentQuestion.name}
         </div>
     );
 }
 
-export default function(props: QuizQuestionProps, ...children: React.ReactNode[]) {
-    return React.createElement(QuizQuestion, props, ...children);
-}
-//export default QuizQuestion;
+// export default function(props: QuizQuestionProps, ...children: React.ReactNode[]) {
+//     return React.createElement(QuizQuestion, props, ...children);
+// }
+export default QuizQuestion;

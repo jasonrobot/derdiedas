@@ -1,65 +1,45 @@
+// React
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+
+//Redux and stuff
+import {
+    applyMiddleware,
+    createStore,
+    combineReducers
+} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 import { Provider } from 'react-redux';
-import { action, createAction } from 'typesafe-actions';
 
-import {
-    cond,
-    equals,
-} from 'ramda';
-
-import {
-    Case
-} from './prototype';
+// Ramda
 
 import './index.css';
 import App from './App';
-// import * as serviceWorker from './serviceWorker';
 
 import {
-    AppState,
-    INITIAL_STATE,
-    fetchWordData,
-} from './state';
+    kasus,
+    article,
+    currentWordPack,
+    currentQuestion,
+    wordPacks,
+    fetchWordPacks,
+} from './reducers'
 
-//////// Actions
-
-enum ActionType {
-    AnswerQuestion,
-    SetArticle,
-    SetCase,
-    SetWordPack,
-};
-
-// const setCaseAction = (kasus: Case) => action(ActionType[ActionType.SetCase], kasus);
-
-const setCaseAction
-
-// const setCaseAction = createAction(SetCase)<Case>();
-
-//////// Recuders
-
-function setCaseReducer(state,
-
-function rootReducer(state = INITIAL_STATE, { type }: Action) {
-    return cond<ActionType, AppState>([
-        [equals<ActionType>('answerQuestion'), () => {
-            return state;
-        }],
-        [equals<ActionType>('setArticle'), () => {
-            return state;
-        }],
-        [equals<ActionType>('setCase'), () => {
-            return state;
-        }],
-        [equals<ActionType>('setWordPack'), () => {
-            return state;
-        }]
-    ])(type);
-}
-
-const store = createStore(rootReducer, INITIAL_STATE);
+const store = createStore(
+    combineReducers({
+        article,
+        currentQuestion,
+        currentWordPack,
+        fetchWordPacks,
+        kasus,
+        wordPacks,
+    }),
+    applyMiddleware(
+        thunkMiddleware,
+        createLogger(),
+    )
+);
 
 ReactDOM.render(
     <Provider store={store}>
