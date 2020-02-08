@@ -20,6 +20,7 @@ export enum Case {
 export interface Word {
     name: string,
     gender: Gender,
+    answer?: Gender,
 }
 
 function strToGender(gender: string): Gender {

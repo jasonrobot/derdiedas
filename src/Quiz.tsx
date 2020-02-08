@@ -1,56 +1,44 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { pick } from 'ramda';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
 import QuizQuestion from './QuizQuestion';
 
 import {
-    Case,
-    Gender,
-    Word,
-    Article,
     getArticlesForCase,
-    ArticleConjugation,
 } from './prototype';
-
-import {
-    answerQuestion,
-} from './actions';
-
-interface QuizProps {
-    article: Article,
-    kasus: Case,
-    currentQuestion: Word,
-}
-
-const NEXT_QUESTION_DELAY = 1000;
-
-// const mapStateToProps = pick(['article', 'kasus', 'currentQuestion']);
 
 function mapStateToProps(state: any) {
     return {
         article: state.article,
         kasus: state.kasus,
-        currentQuestion: state.currentQuestion,
+        questions: state.words.active
     };
 }
 
+const connector = connect(
+    mapStateToProps,
+    // mapDispatchToProps,
+)
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         // ¯\_(ツ)_/¯
-//     };
-// }
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const Quiz: React.FunctionComponent<QuizProps> = ({
+interface Props extends PropsFromRedux {
+}
+
+const NEXT_QUESTION_DELAY = 1000;
+
+const Quiz: React.FunctionComponent<Props> = ({
     article,
     kasus,
-    currentQuestion
-}: QuizProps) => {
+    questions,
+}: Props) => {
 
     const answers = getArticlesForCase(article, kasus);
 
+    const currentQuestion = questions[0];
+
     return React.createElement('div', { className: 'quiz' }, [
+
         QuizQuestion({
             key: currentQuestion.name,
             currentQuestion,
@@ -60,7 +48,4 @@ const Quiz: React.FunctionComponent<QuizProps> = ({
     ]);
 }
 
-export default connect(
-    mapStateToProps,
-    // mapDispatchToProps,
-)(Quiz);
+export default connector(Quiz);

@@ -1,21 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import './App.css';
-
-import {
-    makeWord,
-    Case,
-    Word,
-    Article,
-    FRAU,
-    AUTO,
-    DEFINITE
-} from './prototype';
-
-import {
-    AppState
-} from './state';
 
 import {
     Gender,
@@ -53,7 +39,7 @@ const App: React.FC = () => {
     //     ])
     // );
 
-    if (currentQuestion === null) {
+    if (currentQuestion == null) {
         return (
             <div className="quiz">
                 <MainMenu />
@@ -69,4 +55,5 @@ const App: React.FC = () => {
         );
     }
 }
+
 export default connect()(App);

@@ -14,32 +14,43 @@ import { Provider } from 'react-redux';
 
 // Ramda
 
+// My Stuff
+import {
+    Case,
+    DEFINITE,
+    FRAU,
+    AUTO,
+} from './prototype';
+
 import './index.css';
 import App from './App';
 
-import {
-    kasus,
-    article,
-    currentWordPack,
-    currentQuestion,
-    wordPacks,
-    fetchWordPacks,
-} from './reducers'
+import * as Reducers from './reducers';
+
+const rootReducer = combineReducers({
+    ...Reducers
+})
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 const store = createStore(
-    combineReducers({
-        article,
-        currentQuestion,
-        currentWordPack,
-        fetchWordPacks,
-        kasus,
-        wordPacks,
-    }),
+    rootReducer,
     applyMiddleware(
         thunkMiddleware,
         createLogger(),
     )
 );
+
+export const INITIAL_STATE: RootState = {
+    wordListLoading: false,
+    wordListError: false,
+    words: {
+        active: [FRAU, AUTO],
+        inactive: [],
+    },
+    kasus: Case.Nominative,
+    article: DEFINITE,
+};
 
 ReactDOM.render(
     <Provider store={store}>
@@ -47,16 +58,3 @@ ReactDOM.render(
     </Provider >,
     document.getElementById('root'),
 );
-
-// ReactDOM.render(
-//     new Provider({ store }, [
-//         App({})
-//     ]),
-//     document.getElementById('root'),
-// );
-
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-// serviceWorker.unregister();
