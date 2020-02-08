@@ -7,11 +7,15 @@ import {
     getArticlesForCase,
 } from './prototype';
 
-function mapStateToProps(state: any) {
+import {
+    RootState
+} from './index';
+
+function mapStateToProps(state: RootState) {
     return {
         article: state.article,
         kasus: state.kasus,
-        questions: state.words.active
+        questions: state.words.active,
     };
 }
 
@@ -22,8 +26,7 @@ const connector = connect(
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface Props extends PropsFromRedux {
-}
+interface Props extends PropsFromRedux { }
 
 const NEXT_QUESTION_DELAY = 1000;
 
@@ -37,15 +40,18 @@ const Quiz: React.FunctionComponent<Props> = ({
 
     const currentQuestion = questions[0];
 
-    return React.createElement('div', { className: 'quiz' }, [
+    // return React.createElement('div', { className: 'quiz' }, [
+    //     QuizQuestion({
+    //         key: currentQuestion.name,
+    //     }),
+    //     // ...recentQuestions,
+    // ]);
 
-        QuizQuestion({
-            key: currentQuestion.name,
-            currentQuestion,
-            answers
-        }),
-        // ...recentQuestions,
-    ]);
+    return (
+        <div className="quiz">
+            <QuizQuestion key={currentQuestion.name} />
+        </div>
+    );
 }
 
 export default connector(Quiz);

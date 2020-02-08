@@ -1,42 +1,64 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import {
     always,
     equals,
     ifElse,
     not,
 } from 'ramda';
-// import QuizAnswer from './QuizAnswer';
 
 import {
     ArticleConjugation,
-    Gender,
-    Word
 } from './prototype';
 
 import {
     answerQuestion,
 } from './actions';
 
-interface QuizQuestionProps {
-    currentQuestion: Word,
-    answers: ArticleConjugation[],
-    userAnswer?: Gender,
-    key?: string,
-    dispatch?: any, // FIXME NO ANY
+import {
+    RootState
+} from './index';
+
+function mapStateToProps(state: RootState) {
+    const {
+        answer,
+        gender,
+        name,
+    } = state.words.active[0];
+
+    return {
+        // articles: filter(equals(state.kasus), prop('kasus'))(state.article),
+        articles: state.article.filter(article => article.kasus === state.kasus),
+        answer,
+        gender,
+        name,
+    };
 }
 
-const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
-    currentQuestion,
-    answers,
-    userAnswer,
-    dispatch
-}: QuizQuestionProps) => {
+function mapDispatchToProps() { }
 
-    const answersMarkup = answers.map((article: ArticleConjugation, index: number) => {
+const connector = connect(
+    mapStateToProps,
+    // mapDispatchToProps,
+);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface Props extends PropsFromRedux { }
+
+const QuizQuestion: React.FunctionComponent<Props> = ({
+    answer,
+    gender,
+    name,
+    articles,
+    dispatch
+}: Props) => {
+
+    const answersMarkup = articles.map((article: ArticleConjugation, index: number) => {
         return (
             <button
                 key={index}
-                disabled={(userAnswer !== null)}
+                disabled={not(equals(undefined, answer))}
                 onClick={() => dispatch(answerQuestion(article.gender))}>
                 {article.name}
             </button >
@@ -46,9 +68,9 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
     const isCorrectAttr = {
         'data-is-correct': ifElse(
             equals(undefined),
-            equals(currentQuestion.gender),
             always({}),
-        )(userAnswer),
+            equals(gender),
+        )(answer),
     };
 
     return (
@@ -58,7 +80,7 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
             <div className="answers">
                 {answersMarkup}
             </div>
-            {currentQuestion.name}
+            {name}
         </div>
     );
 }
@@ -66,4 +88,4 @@ const QuizQuestion: React.FunctionComponent<QuizQuestionProps> = ({
 // export default function(props: QuizQuestionProps, ...children: React.ReactNode[]) {
 //     return React.createElement(QuizQuestion, props, ...children);
 // }
-export default QuizQuestion;
+export default connector(QuizQuestion);
