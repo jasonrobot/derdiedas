@@ -17,40 +17,77 @@ import { Provider } from 'react-redux';
 // My Stuff
 import {
     Case,
+    Gender,
     DEFINITE,
-    FRAU,
-    AUTO,
 } from './prototype';
 
 import './index.css';
 import App from './App';
 
-import * as Reducers from './reducers';
+import {
+    wordListLoading,
+    wordListError,
+    article,
+    kasus,
+    words,
+} from './reducers';
+import { Genus } from './prototype-de';
+import { init } from 'ramda';
 
 const rootReducer = combineReducers({
-    ...Reducers
+    wordListLoading,
+    wordListError,
+    article,
+    kasus,
+    words,
 })
+
+const sampleWords = [{
+    name: 'Auto',
+    gender: Gender.Neuter,
+}, {
+    name: 'Frau',
+    gender: Gender.Feminine,
+}, {
+    name: 'Mann',
+    gender: Gender.Masculine,
+}, {
+    name: 'Mädchen',
+    gender: Gender.Neuter
+}, {
+    name: 'Haus',
+    gender: Gender.Masculine
+}, {
+    name: 'Zeitung',
+    gender: Gender.Feminine
+}, {
+    name: 'Bier',
+    gender: Gender.Neuter
+}];
 
 export type RootState = ReturnType<typeof rootReducer>;
 
+export const INITIAL_STATE: RootState = {
+    wordListLoading: false,
+    wordListError: false,
+    words: {
+        active: sampleWords,
+        inactive: [],
+        recent: [],
+    },
+    kasus: Case.Nominative,
+    article: DEFINITE,
+};
+
 const store = createStore(
     rootReducer,
+    INITIAL_STATE,
     applyMiddleware(
         thunkMiddleware,
         createLogger(),
     )
 );
 
-export const INITIAL_STATE: RootState = {
-    wordListLoading: false,
-    wordListError: false,
-    words: {
-        active: [FRAU, AUTO],
-        inactive: [],
-    },
-    kasus: Case.Nominative,
-    article: DEFINITE,
-};
 
 ReactDOM.render(
     <Provider store={store}>

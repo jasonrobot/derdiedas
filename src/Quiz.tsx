@@ -16,6 +16,7 @@ function mapStateToProps(state: RootState) {
         article: state.article,
         kasus: state.kasus,
         questions: state.words.active,
+        recentQuestions: state.words.recent,
     };
 }
 
@@ -34,24 +35,35 @@ const Quiz: React.FunctionComponent<Props> = ({
     article,
     kasus,
     questions,
+    recentQuestions,
 }: Props) => {
-
-    const answers = getArticlesForCase(article, kasus);
 
     const currentQuestion = questions[0];
 
-    // return React.createElement('div', { className: 'quiz' }, [
-    //     QuizQuestion({
-    //         key: currentQuestion.name,
-    //     }),
-    //     // ...recentQuestions,
-    // ]);
+    const recents = recentQuestions.map((rq, idx) => {
+        const props = {
+            word: rq,
+            key: `recent-${idx}-${rq.name}`,
+        };
+        return (
+            <QuizQuestion {...props} />
+        );
+    });
+
+    const currentQuestionProps = {
+        word: currentQuestion,
+        key: 'current',
+    }
 
     return (
         <div className="quiz">
-            <QuizQuestion key={currentQuestion.name} />
+            <QuizQuestion {...currentQuestionProps} />
+            <div className="recent-questions">
+                Recent Questions:
+                {...recents}
+            </div>
         </div>
     );
-}
 
+}
 export default connector(Quiz);

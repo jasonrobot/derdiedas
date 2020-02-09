@@ -6,16 +6,14 @@ import {
     difference,
     equals,
     T,
+    take,
 } from 'ramda';
 
 import {
     Case,
-    Gender,
     Article,
     DEFINITE,
     Word,
-    FRAU,
-    AUTO,
 } from './prototype';
 
 import {
@@ -23,10 +21,9 @@ import {
     ActionType,
 } from './actions';
 
-export interface Question {
-    word: Word,
-    answer?: Gender,
-}
+import {
+    Words,
+} from './state';
 
 export const wordListLoading = (state: boolean = false, action: Action) =>
     cond<ActionType, boolean>([
@@ -46,15 +43,6 @@ export const wordListError = (state: boolean = false, action: Action) =>
         [T, always(state)],
     ])(action.type);
 
-// export const wordList = (state: WordPack[] = [[]], action: Action) =>
-//     cond<ActionType, WordPack[]>([
-//         [
-//             equals<ActionType>(ActionType.WordListLoadSuccess),
-//             always(action.payload as WordPack[])
-//         ],
-//         [T, always(state)],
-//     ])(action.type);
-
 export const article = (state: Article = DEFINITE, action: Action): Article =>
     cond<ActionType, Article>([
         [
@@ -73,23 +61,30 @@ export const kasus = (state: Case = Case.Nominative, action: Action): Case =>
         [T, always(state)]
     ])(action.type);
 
-interface Words {
-    active: Word[],
-    inactive: Word[],
-}
-
 const defaultWords: Words = {
     active: [],
     inactive: [],
+    recent: [],
 }
-export const words = ({ active, inactive }: Words = defaultWords, { payload, type }: Action) =>
+
+export const words = (
+    {
+        active,
+        inactive,
+        recent,
+    }: Words = defaultWords,
+    {
+        payload,
+        type
+    }: Action
+) =>
     cond<ActionType, Words>([
         [equals<ActionType>(ActionType.DeactivateWords),
         () => {
-            console.log(ActionType.DeactivateWords, type);
             return {
                 active: difference(active, payload),
-                inactive: inactive.concat(payload)
+                inactive: inactive.concat(payload),
+                recent,
             }
         }],
         [equals<ActionType>(ActionType.ActivateWords),
@@ -97,27 +92,21 @@ export const words = ({ active, inactive }: Words = defaultWords, { payload, typ
             return {
                 active: active.concat(payload),
                 inactive: difference(inactive, payload),
+                recent,
             };
         }],
         [equals<ActionType>(ActionType.AnswerQuestion),
         () => {
             const answeredQuestion: Word = {
                 ...active[0],
-                answer: payload
+                answer: payload,
             };
             return {
                 active: append(answeredQuestion, drop(1, active)),
                 inactive,
+                // recent: take(5, append({ ...answeredQuestion }, recent)),
+                recent: [{ ...answeredQuestion }, ...recent].slice(0, 5)
             };
         }],
-        [T, always({ active: [FRAU, AUTO], inactive })]
+        [T, always({ active, inactive, recent })]
     ])(type)
-
-// export const question = (state: number = 0, action: Action) =>
-//     cond<ActionType, number>([
-//         [
-//             equals<ActionType>(ActionType.AnswerQuestion),
-//             always(action.payload as number)
-//         ],
-//         [T, always(state)]
-//     ])(action.type);

@@ -1,9 +1,7 @@
 import {
     makeWord,
-    Case,
+    Gender,
     Word,
-    Article,
-    DEFINITE
 } from './prototype';
 
 export type WordPack = Word[];
@@ -20,4 +18,16 @@ export async function fetchWordData(): Promise<WordPack[]> {
     return responseJson.map((wordPack: [WordDefinition]) => {
         return wordPack.map((wordDef: WordDefinition) => makeWord(wordDef));
     });
+}
+
+export interface Words {
+    active: Word[],
+    inactive: Word[],
+    recent: Word[],
+}
+
+
+export interface Question {
+    word: Word,
+    answer?: Gender,
 }

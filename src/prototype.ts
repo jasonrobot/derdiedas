@@ -266,16 +266,6 @@ export const INDEFINITE: Article = makeArticle([
 
 // conjugate(INDEFINITE, Gender.Neuter, Case.Dative);
 
-export const AUTO: Word = {
-    name: 'Auto',
-    gender: Gender.Neuter,
-}
-
-export const FRAU: Word = {
-    name: 'Frau',
-    gender: Gender.Feminine,
-}
-
 // export function conjugateWord({ word, gender }: Word, kasus: Case): string {
 //     const conjugatedArticle = conjugate(DEFINITE, gender, kasus);
 //     return `${Case[kasus]}: ${conjugatedArticle} ${word} (${Gender[gender]})`;

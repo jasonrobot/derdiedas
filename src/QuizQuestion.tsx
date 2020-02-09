@@ -9,6 +9,8 @@ import {
 
 import {
     ArticleConjugation,
+    Gender,
+    Word,
 } from './prototype';
 
 import {
@@ -20,46 +22,46 @@ import {
 } from './index';
 
 function mapStateToProps(state: RootState) {
-    const {
-        answer,
-        gender,
-        name,
-    } = state.words.active[0];
-
     return {
         // articles: filter(equals(state.kasus), prop('kasus'))(state.article),
         articles: state.article.filter(article => article.kasus === state.kasus),
-        answer,
-        gender,
-        name,
+        // word: state.words.active[0],
     };
 }
 
-function mapDispatchToProps() { }
+function mapDispatchToProps(dispatch: any) {
+    return {
+        answerQuestion: (gender: Gender) => dispatch(answerQuestion(gender)),
+    };
+}
 
 const connector = connect(
     mapStateToProps,
-    // mapDispatchToProps,
+    mapDispatchToProps,
 );
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface Props extends PropsFromRedux { }
+interface QQProps extends PropsFromRedux {
+    word: Word,
+}
 
-const QuizQuestion: React.FunctionComponent<Props> = ({
-    answer,
-    gender,
-    name,
+const QuizQuestion: React.FunctionComponent<QQProps> = ({
+    word: {
+        answer,
+        gender,
+        name,
+    },
     articles,
-    dispatch
-}: Props) => {
+    answerQuestion,
+}: QQProps) => {
 
     const answersMarkup = articles.map((article: ArticleConjugation, index: number) => {
         return (
             <button
                 key={index}
                 disabled={not(equals(undefined, answer))}
-                onClick={() => dispatch(answerQuestion(article.gender))}>
+                onClick={() => answerQuestion(article.gender)}>
                 {article.name}
             </button >
         );
@@ -85,7 +87,4 @@ const QuizQuestion: React.FunctionComponent<Props> = ({
     );
 }
 
-// export default function(props: QuizQuestionProps, ...children: React.ReactNode[]) {
-//     return React.createElement(QuizQuestion, props, ...children);
-// }
 export default connector(QuizQuestion);
