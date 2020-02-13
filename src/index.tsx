@@ -31,8 +31,6 @@ import {
     kasus,
     words,
 } from './reducers';
-import { Genus } from './prototype-de';
-import { init } from 'ramda';
 
 const rootReducer = combineReducers({
     wordListLoading,
@@ -87,7 +85,6 @@ const store = createStore(
         createLogger(),
     )
 );
-
 
 ReactDOM.render(
     <Provider store={store}>

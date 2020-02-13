@@ -1,4 +1,9 @@
 import {
+    ThunkAction,
+} from 'redux-thunk';
+
+import {
+    makeWord,
     Article,
     Case,
     Gender,
@@ -7,7 +12,12 @@ import {
 
 import {
     WordPack,
+    WordDefinition,
 } from './state';
+
+import {
+    RootState,
+} from './index';
 
 export enum ActionType {
     ActivateWords,
@@ -64,55 +74,73 @@ export function answerQuestion(answer: Gender) {
 //     };
 // }
 
-export function wordListFetch(url: string) {
-    return async (dispatch: any) => {
-        dispatch(wordListLoading(true))
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            dispatch(wordListLoading(false));
-            const items = await response.json();
-            dispatch(wordListLoadSuccess(items));
-        } catch {
-            dispatch(wordListError(true));
-        }
+export async function fetchWordData(): Promise<WordPack[]> {
+    const response = await fetch('http://localhost:8080/nouns3.json');
+    if (!response.ok) {
+        //TODO Should set state to some sort of error condition
+        throw new Error(response.statusText);
     }
+    const responseJson = await response.json();
+    return responseJson.map((wordPack: [WordDefinition]) => {
+        return wordPack.map((wordDef: WordDefinition) => makeWord(wordDef));
+    });
 }
+
+// export const wordListFetch: ThunkAction<void, RootState, unknown, Action> =
+export const wordListFetch: any =
+    () => {
+        return async (dispatch: any) => {
+            dispatch(wordListLoading(true));
+
+            try {
+                const response = await fetch('http://localhost:8080/nouns3.json');
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                dispatch(wordListLoading(false));
+                const responseJson = await response.json();
+                const items = responseJson.map((wordPack: [WordDefinition]) => {
+                    return wordPack.map((wordDef: WordDefinition) => makeWord(wordDef));
+                });
+
+                dispatch(wordListLoadSuccess(items));
+            } catch {
+                dispatch(wordListError(true));
+            }
+        }
+    };
 
 export function wordListError(bool: boolean) {
     return {
         type: ActionType.WordListError,
-        hasErrored: bool
+        payload: bool
     };
 }
 
 export function wordListLoading(bool: boolean) {
     return {
         type: ActionType.WordListLoading,
-        isLoading: bool
+        payload: bool
     };
 }
 
 export function wordListLoadSuccess(items: Word[][]) {
     return {
         type: ActionType.WordListLoadSuccess,
-        items
+        payload: items
     };
 }
 
 export function activateWords(words: Word[]) {
     return {
         type: ActionType.ActivateWords,
-        words,
+        payload: words,
     };
 }
 
 export function deactivateWords(words: Word[]) {
     return {
         type: ActionType.DeactivateWords,
-        words,
+        payload: words,
     };
 }

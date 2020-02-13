@@ -95,6 +95,14 @@ export const words = (
                 recent,
             };
         }],
+        [equals<ActionType>(ActionType.WordListLoadSuccess),
+        () => {
+            return {
+                active: active.concat(payload[0]),
+                inactive,
+                recent,
+            };
+        }],
         [equals<ActionType>(ActionType.AnswerQuestion),
         () => {
             const answeredQuestion: Word = {
@@ -103,9 +111,9 @@ export const words = (
             };
             return {
                 active: append(answeredQuestion, drop(1, active)),
-                inactive,
                 // recent: take(5, append({ ...answeredQuestion }, recent)),
-                recent: [{ ...answeredQuestion }, ...recent].slice(0, 5)
+                recent: [{ ...answeredQuestion }, ...recent].slice(0, 5),
+                inactive,
             };
         }],
         [T, always({ active, inactive, recent })]

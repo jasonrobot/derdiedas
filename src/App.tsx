@@ -1,7 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
 import './App.css';
+
+import {
+    wordListFetch,
+} from './actions';
 
 import {
     Gender,
@@ -10,34 +14,22 @@ import {
 import MainMenu from './MainMenu';
 import Quiz from './Quiz';
 
-const App: React.FC = () => {
+const connector = connect();
 
-    // const [appState, setAppState] = useState<AppState>(INITIAL_STATE);
+type Props = ConnectedProps<typeof connector>;
 
-    // useEffect(() => {
-    //     fetchWordData().then((wordPacks: [[Word]]) => {
-    //         setAppState({
-    //             ...appState,
-    //             wordPacks
-    //         });
-    //     });
-    // }, []);
+const App: React.FC<Props> = ({
+    dispatch,
+}: Props) => {
+
+    useEffect(() => {
+        dispatch(wordListFetch());
+    }, []);
 
     const currentQuestion = {
         name: 'Frau',
         gender: Gender.Feminine,
     };
-
-    // return (
-    //     React.createElement('div', { className: 'quiz' }, [
-    //         MainMenu({}),
-    //         new Quiz({
-    //             article: DEFINITE,
-    //             kasus: Case.Nominative,
-    //             currentQuestion,
-    //         })
-    //     ])
-    // );
 
     if (currentQuestion == null) {
         return (
@@ -56,4 +48,4 @@ const App: React.FC = () => {
     }
 }
 
-export default connect()(App);
+export default connector(App);
