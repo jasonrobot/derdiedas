@@ -98,7 +98,7 @@ export const words = (
         [equals<ActionType>(ActionType.WordListLoadSuccess),
         () => {
             return {
-                active: active.concat(payload[0]),
+                active: payload[0],
                 inactive,
                 recent,
             };
