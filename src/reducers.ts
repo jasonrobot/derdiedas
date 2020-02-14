@@ -1,12 +1,10 @@
 import {
     always,
-    append,
-    drop,
     cond,
     difference,
     equals,
+    move,
     T,
-    take,
 } from 'ramda';
 
 import {
@@ -109,10 +107,13 @@ export const words = (
                 ...active[0],
                 answer: payload,
             };
+            const halfLength = Math.floor(active.length / 2);
+            const next = Math.floor((Math.random() * halfLength)) + halfLength;
             return {
-                active: append(answeredQuestion, drop(1, active)),
+                // active: append(answeredQuestion, drop(1, active)),
+                active: move(next, 0, active),
                 // recent: take(5, append({ ...answeredQuestion }, recent)),
-                recent: [{ ...answeredQuestion }, ...recent].slice(0, 5),
+                recent: [{ ...answeredQuestion }, ...recent].slice(0, 10),
                 inactive,
             };
         }],

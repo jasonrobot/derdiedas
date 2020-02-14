@@ -2,9 +2,15 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import {
     always,
+    compose,
+    concat,
     equals,
+    head,
     ifElse,
+    isNil,
     not,
+    tail,
+    toUpper,
 } from 'ramda';
 
 import {
@@ -56,11 +62,13 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
     answerQuestion,
 }: QQProps) => {
 
+    const isAnswered = not(equals(undefined));
+
     const answersMarkup = articles.map((article: ArticleConjugation, index: number) => {
         return (
             <button
                 key={index}
-                disabled={not(equals(undefined, answer))}
+                disabled={isAnswered}
                 onClick={() => answerQuestion(article.gender)}>
                 {article.name}
             </button >
@@ -69,11 +77,19 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
 
     const isCorrectAttr = {
         'data-is-correct': ifElse(
-            equals(undefined),
-            always({}),
+            compose(not, isNil),
             equals(gender),
+            always({}),
         )(answer),
     };
+
+    const capitalize = (s: string) => concat(toUpper(head(s)), tail(s));
+
+    const renderedName = ifElse(
+        compose(not, isNil),
+        always(`${articles[gender].name} ${capitalize(name)}`),
+        always(capitalize(name))
+    )(answer);
 
     return (
         <div
@@ -82,7 +98,7 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
             <div className="answers">
                 {answersMarkup}
             </div>
-            {name}
+            {renderedName}
         </div>
     );
 }

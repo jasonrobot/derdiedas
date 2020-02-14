@@ -29,11 +29,9 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface Props extends PropsFromRedux { }
 
-const NEXT_QUESTION_DELAY = 1000;
+// const NEXT_QUESTION_DELAY = 1000;
 
 const Quiz: React.FunctionComponent<Props> = ({
-    article,
-    kasus,
     questions,
     recentQuestions,
 }: Props) => {
