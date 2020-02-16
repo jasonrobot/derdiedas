@@ -20,14 +20,14 @@ import {
 } from './index';
 
 export enum ActionType {
-    ActivateWords,
-    AnswerQuestion,
-    DeactivateWords,
-    SetArticle,
-    SetCase,
-    WordListLoading,
-    WordListError,
-    WordListLoadSuccess,
+    ActivateWords = 'ActivateWords',
+    AnswerQuestion = 'AnswerQuestion',
+    DeactivateWords = 'DeactivateWords',
+    SetArticle = 'SetArticle',
+    SetCase = 'SetCase',
+    WordListLoading = 'WordListLoading',
+    WordListError = 'WordListError',
+    WordListLoadSuccess = 'WordListLoadSuccess',
 };
 
 // FIXME NO ANY

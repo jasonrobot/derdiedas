@@ -40,36 +40,14 @@ const rootReducer = combineReducers({
     words,
 })
 
-const sampleWords = [{
-    name: 'Auto',
-    gender: Gender.Neuter,
-}, {
-    name: 'Frau',
-    gender: Gender.Feminine,
-}, {
-    name: 'Mann',
-    gender: Gender.Masculine,
-}, {
-    name: 'Mädchen',
-    gender: Gender.Neuter
-}, {
-    name: 'Haus',
-    gender: Gender.Masculine
-}, {
-    name: 'Zeitung',
-    gender: Gender.Feminine
-}, {
-    name: 'Bier',
-    gender: Gender.Neuter
-}];
-
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const INITIAL_STATE: RootState = {
     wordListLoading: false,
     wordListError: false,
     words: {
-        active: sampleWords,
+        // active: sampleWords,
+        active: [],
         inactive: [],
         recent: [],
     },

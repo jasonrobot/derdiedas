@@ -3,18 +3,13 @@
 }
 
 .question {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid;
-  margin: 5px;
-  flex-direction: column;
-}
-
-.answers {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid;
+    margin: 10px auto;
+    flex-direction: column;
+    width: 20em;
 }
 
 [data-is-correct="true"] {
@@ -23,4 +18,27 @@
 
 [data-is-correct="false"] {
     border: 2px solid red;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.answer {
+    border: 1px solid;
+    margin: 5px;
+    text-align: center;
+    cursor: default;
+}
+
+.answers {
+    width: 100%;
+}
+
+.answer[data-is-correct="false"] {
+    background: rgba(191, 0, 0, 0.5);
+}
+
+.answer[data-is-correct="true"] {
+    background: rgba(0, 127, 0, 0.5);
 }

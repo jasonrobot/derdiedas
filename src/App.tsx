@@ -4,6 +4,10 @@ import { connect, ConnectedProps } from 'react-redux';
 import './App.css';
 
 import {
+    RootState
+} from './index';
+
+import {
     wordListFetch,
 } from './actions';
 
@@ -14,11 +18,21 @@ import {
 import MainMenu from './MainMenu';
 import Quiz from './Quiz';
 
-const connector = connect();
+function mapStateToProps(state: RootState) {
+    return {
+        loading: state.wordListLoading,
+        error: state.wordListError
+    };
+}
+
+
+const connector = connect(mapStateToProps);
 
 type Props = ConnectedProps<typeof connector>;
 
 const App: React.FC<Props> = ({
+    loading,
+    error,
     dispatch,
 }: Props) => {
 
@@ -26,26 +40,30 @@ const App: React.FC<Props> = ({
         dispatch(wordListFetch());
     }, []);
 
-    const currentQuestion = {
-        name: 'Frau',
-        gender: Gender.Feminine,
-    };
-
-    if (currentQuestion == null) {
+    if (loading) {
         return (
             <div className="quiz">
                 <MainMenu />
                 <div>loading...</div>
             </div>
         )
-    } else {
+    }
+
+    if (error) {
         return (
             <div className="quiz">
                 <MainMenu />
-                <Quiz />
+                <div>error...</div>
             </div>
-        );
+        )
     }
+
+    return (
+        <div className="quiz">
+            <MainMenu />
+            <Quiz />
+        </div>
+    );
 }
 
 export default connector(App);

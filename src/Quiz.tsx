@@ -13,8 +13,6 @@ import {
 
 function mapStateToProps(state: RootState) {
     return {
-        article: state.article,
-        kasus: state.kasus,
         questions: state.words.active,
         recentQuestions: state.words.recent,
     };
@@ -35,6 +33,11 @@ const Quiz: React.FunctionComponent<Props> = ({
     questions,
     recentQuestions,
 }: Props) => {
+    if (questions.length === 0) {
+        return (
+            <div></div>
+        );
+    }
 
     const currentQuestion = questions[0];
 

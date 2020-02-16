@@ -3,14 +3,11 @@ import { connect, ConnectedProps } from 'react-redux';
 import {
     always,
     compose,
-    concat,
     equals,
-    head,
     ifElse,
     isNil,
     not,
-    tail,
-    toUpper,
+    or,
 } from 'ramda';
 
 import {
@@ -31,7 +28,6 @@ function mapStateToProps(state: RootState) {
     return {
         // articles: filter(equals(state.kasus), prop('kasus'))(state.article),
         articles: state.article.filter(article => article.kasus === state.kasus),
-        // word: state.words.active[0],
     };
 }
 
@@ -62,18 +58,56 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
     answerQuestion,
 }: QQProps) => {
 
-    const isAnswered = not(equals(undefined));
+    let answersMarkup = [];
+    if (answer === undefined) {
+        // No answer given, set up clickable answers for every article.
 
-    const answersMarkup = articles.map((article: ArticleConjugation, index: number) => {
-        return (
-            <button
-                key={index}
-                disabled={isAnswered}
-                onClick={() => answerQuestion(article.gender)}>
-                {article.name}
-            </button >
-        );
-    });
+        answersMarkup = articles.map((article: ArticleConjugation, index: number) => {
+            const clickHandler = () => answerQuestion(article.gender);
+
+            return (
+                <div
+                    key={index}
+                    className="answer"
+                    onClick={clickHandler}>
+                    {article.name}&nbsp;
+                    <span className="capitalize">{name}</span>
+                </div>
+            );
+        });
+
+    } else {
+        // The question has been answered, show the user's answer, and the correct
+        // answer if they were wrong.
+
+        const correctArticle = articles.find(art => art.gender === gender);
+        const userAnswer = articles.find(art => art.gender === answer);
+
+        const articlesToShow: ArticleConjugation[] = [];
+        if (userAnswer) {
+            articlesToShow.push(userAnswer);
+        }
+
+        if (answer !== gender) {
+            if (correctArticle) {
+                articlesToShow.push(correctArticle);
+            }
+        }
+
+        answersMarkup = articlesToShow
+            .map((article: ArticleConjugation, index: number) => {
+                const isCorrect = equals(article.gender, gender);
+                return (
+                    <div
+                        key={index}
+                        className="answer"
+                        data-is-correct={isCorrect}>
+                        {article.name}&nbsp;
+                        <span className="capitalize">{name}</span>
+                    </div>
+                );
+            });
+    }
 
     const isCorrectAttr = {
         'data-is-correct': ifElse(
@@ -83,14 +117,6 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
         )(answer),
     };
 
-    const capitalize = (s: string) => concat(toUpper(head(s)), tail(s));
-
-    const renderedName = ifElse(
-        compose(not, isNil),
-        always(`${articles[gender].name} ${capitalize(name)}`),
-        always(capitalize(name))
-    )(answer);
-
     return (
         <div
             className="question"
@@ -98,7 +124,6 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
             <div className="answers">
                 {answersMarkup}
             </div>
-            {renderedName}
         </div>
     );
 }
