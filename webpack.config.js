@@ -6,7 +6,7 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js"]
+        extensions: [".ts", ".tsx", ".js"],
     },
 
     module: {
@@ -16,7 +16,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: "ts-loader"
+                        loader: "ts-loader",
                     }
                 ]
             },
@@ -29,7 +29,7 @@ module.exports = {
             {
                 enforce: "pre",
                 test: /\.js$/,
-                loader: "source-map-loader"
+                loader: "source-map-loader",
             }
         ]
     },
@@ -41,6 +41,6 @@ module.exports = {
     // builds.
     externals: {
         "react": "React",
-        "react-dom": "ReactDOM"
+        "react-dom": "ReactDOM",
     }
 };
