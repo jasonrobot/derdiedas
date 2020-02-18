@@ -20,6 +20,6 @@
         "target": "es2019"
     },
     "include": [
-        "src"
+        "web"
     ]
 }

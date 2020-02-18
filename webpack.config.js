@@ -1,5 +1,13 @@
+const path = require('path');
+
 module.exports = {
     mode: "development",
+
+    entry: path.resolve(__dirname, './web'),
+
+    // output: {
+    //     path: path.resolve(__dirname, '../dist'),
+    // },
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",

@@ -57,35 +57,6 @@ export function answerQuestion(answer: Gender) {
     }
 }
 
-// export function itemsFetchData(url) {
-//     return (dispatch) => {
-//         dispatch(itemsIsLoading(true));
-//         fetch(url)
-//             .then((response) => {
-//                 if (!response.ok) {
-//                     throw Error(response.statusText);
-//                 }
-//                 dispatch(itemsIsLoading(false));
-//                 return response;
-//             })
-//             .then((response) => response.json())
-//             .then((items) => dispatch(itemsFetchDataSuccess(items)))
-//             .catch(() => dispatch(itemsHasErrored(true)));
-//     };
-// }
-
-export async function fetchWordData(): Promise<WordPack[]> {
-    const response = await fetch('http://localhost:8080/nouns3.json');
-    if (!response.ok) {
-        //TODO Should set state to some sort of error condition
-        throw new Error(response.statusText);
-    }
-    const responseJson = await response.json();
-    return responseJson.map((wordPack: [WordDefinition]) => {
-        return wordPack.map((wordDef: WordDefinition) => makeWord(wordDef));
-    });
-}
-
 // export const wordListFetch: ThunkAction<void, RootState, unknown, Action> =
 export const wordListFetch: any =
     () => {
@@ -93,7 +64,7 @@ export const wordListFetch: any =
             dispatch(wordListLoading(true));
 
             try {
-                const response = await fetch('http://localhost:8080/nouns3.json');
+                const response = await fetch('http://localhost:3000/nouns3.json');
                 if (!response.ok) {
                     throw new Error(response.statusText);
                 }
