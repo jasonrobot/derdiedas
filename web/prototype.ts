@@ -40,7 +40,7 @@ export type ArticleDef = [
     [string, string, string, string],
     [string, string, string, string],
     [string, string, string, string],
-    [string, string, string, string],
+    // [string, string, string, string],
 ];
 
 export interface ArticleConjugation {
@@ -55,7 +55,7 @@ export function makeArticle([
     [mn, ma, md, mg],
     [fn, fa, fd, fg],
     [nn, na, nd, ng],
-    [pn, pa, pd, pg]
+    // [pn, pa, pd, pg]
 ]: ArticleDef): Article {
     return [{
         gender: Gender.Masculine,
@@ -105,22 +105,22 @@ export function makeArticle([
         gender: Gender.Neuter,
         kasus: Case.Genative,
         name: ng
-    }, {
-        gender: Gender.Plural,
-        kasus: Case.Nominative,
-        name: pn
-    }, {
-        gender: Gender.Plural,
-        kasus: Case.Accusative,
-        name: pa
-    }, {
-        gender: Gender.Plural,
-        kasus: Case.Dative,
-        name: pd
-    }, {
-        gender: Gender.Plural,
-        kasus: Case.Genative,
-        name: pg
+        // }, {
+        //     gender: Gender.Plural,
+        //     kasus: Case.Nominative,
+        //     name: pn
+        // }, {
+        //     gender: Gender.Plural,
+        //     kasus: Case.Accusative,
+        //     name: pa
+        // }, {
+        //     gender: Gender.Plural,
+        //     kasus: Case.Dative,
+        //     name: pd
+        // }, {
+        //     gender: Gender.Plural,
+        //     kasus: Case.Genative,
+        //     name: pg
     }];
 }
 
@@ -128,14 +128,14 @@ export const DEFINITE: Article = makeArticle([
     ['der', 'den', 'dem', 'des'],
     ['die', 'die', 'der', 'der'],
     ['das', 'das', 'dem', 'des'],
-    ['die', 'die', 'den', 'der'],
+    // ['die', 'die', 'den', 'der'],
 ]);
 
 export const INDEFINITE: Article = makeArticle([
     ['ein', 'einen', 'einem', 'eines'],
     ['eine', 'eine', 'einer', 'einer'],
     ['ein', 'ein', 'einem', 'eines'],
-    ['-eine', '-eine', '-einen', '-einer']
+    // ['-eine', '-eine', '-einen', '-einer']
 ]);
 
 

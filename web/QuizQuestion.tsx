@@ -7,7 +7,6 @@ import {
     ifElse,
     isNil,
     not,
-    or,
 } from 'ramda';
 
 import {
@@ -61,7 +60,6 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
     let answersMarkup = [];
     if (answer === undefined) {
         // No answer given, set up clickable answers for every article.
-
         answersMarkup = articles.map((article: ArticleConjugation, index: number) => {
             const clickHandler = () => answerQuestion(article.gender);
 
@@ -75,7 +73,6 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
                 </div>
             );
         });
-
     } else {
         // The question has been answered, show the user's answer, and the correct
         // answer if they were wrong.
