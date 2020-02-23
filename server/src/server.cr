@@ -8,4 +8,5 @@ get "/" do |env|
   send_file env, "./index.html"
 end
 
-Kemal.run(80)
+port = ENV["PORT"] || 6969
+Kemal.run port.to_i
