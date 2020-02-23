@@ -1,0 +1,17 @@
+name: derdiedas
+version: 0.9.0
+
+authors:
+  - Jason Howell <jasonrobot64@gmail.com
+
+targets:
+  derdiedas:
+      main: server.cr
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+
+crystal: 0.32.1
+
+license: GPL-3.0

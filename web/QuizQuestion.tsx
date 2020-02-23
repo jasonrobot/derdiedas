@@ -69,7 +69,8 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
                     className="answer"
                     onClick={clickHandler}>
                     {article.name}&nbsp;
-                    <span className="capitalize">{name}</span>
+                    <span className="capitalize">{name}</span>&nbsp;
+                    ({Gender[article.gender][0].toLowerCase()})
                 </div>
             );
         });
@@ -95,12 +96,12 @@ const QuizQuestion: React.FunctionComponent<QQProps> = ({
             .map((article: ArticleConjugation, index: number) => {
                 const isCorrect = equals(article.gender, gender);
                 return (
-                    <div
-                        key={index}
+                    <div key={index}
                         className="answer"
                         data-is-correct={isCorrect}>
                         {article.name}&nbsp;
-                        <span className="capitalize">{name}</span>
+                        <span className="capitalize">{name}</span>&nbsp;
+                        ({Gender[article.gender][0].toLowerCase()})
                     </div>
                 );
             });

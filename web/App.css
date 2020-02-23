@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+#root {
+    width: 20em;
+    margin: auto;
+}
+
 .question {
     display: flex;
     justify-content: space-between;
@@ -9,7 +14,6 @@
     border: 1px solid;
     margin: 10px auto;
     flex-direction: column;
-    width: 20em;
 }
 
 [data-is-correct="true"] {

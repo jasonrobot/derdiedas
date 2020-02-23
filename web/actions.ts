@@ -64,7 +64,7 @@ export const wordListFetch: any =
             dispatch(wordListLoading(true));
 
             try {
-                const response = await fetch('http://localhost:3000/nouns3.json');
+                const response = await fetch('/nouns3.json');
                 if (!response.ok) {
                     throw new Error(response.statusText);
                 }
