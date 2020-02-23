@@ -8,4 +8,4 @@ get "/" do |env|
   send_file env, "./index.html"
 end
 
-Kemal.run
+Kemal.run(80)

@@ -13,7 +13,7 @@ RUN ["ls"]
 COPY ./index.html .
 COPY ./dist/ ./dist
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["./server"]
 # CMD ["ls", "-R"]
