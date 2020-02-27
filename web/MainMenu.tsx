@@ -6,8 +6,11 @@ import {
 } from 'ramda';
 
 import {
-    Case, Article, DEFINITE, INDEFINITE,
-} from './prototype';
+    Article,
+    Case,
+} from './types';
+
+import Articles from './Article';
 
 import {
     setArticle,
@@ -44,8 +47,8 @@ const MainMenu: React.FC<Props> = ({
 }) => {
 
     const articles: { [key: string]: Article } = {
-        'definite': DEFINITE,
-        'indefinite': INDEFINITE,
+        'definite': Articles.DEFINITE,
+        'indefinite': Articles.INDEFINITE,
     };
 
     const handleChange = (event: any) => {

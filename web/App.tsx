@@ -11,10 +11,6 @@ import {
     wordListFetch,
 } from './actions';
 
-import {
-    Gender,
-} from './prototype';
-
 import MainMenu from './MainMenu';
 import Quiz from './Quiz';
 

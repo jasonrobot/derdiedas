@@ -13,7 +13,7 @@ import {
     ArticleConjugation,
     Gender,
     Word,
-} from './prototype';
+} from './types';
 
 import {
     answerQuestion,

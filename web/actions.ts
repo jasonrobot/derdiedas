@@ -8,16 +8,8 @@ import {
     Case,
     Gender,
     Word,
-} from './prototype';
-
-import {
-    WordPack,
     WordDefinition,
-} from './state';
-
-import {
-    RootState,
-} from './index';
+} from './types';
 
 export enum ActionType {
     ActivateWords = 'ActivateWords',

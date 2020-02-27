@@ -8,20 +8,18 @@ import {
 } from 'ramda';
 
 import {
-    Case,
-    Article,
-    DEFINITE,
-    Word,
-} from './prototype';
-
-import {
     Action,
     ActionType,
 } from './actions';
 
+import Articles from './Article';
+
 import {
+    Article,
+    Case,
     Words,
-} from './state';
+    Word,
+} from './types';
 
 export const wordListLoading = (state: boolean = false, action: Action) =>
     cond<ActionType, boolean>([
@@ -41,7 +39,7 @@ export const wordListError = (state: boolean = false, action: Action) =>
         [T, always(state)],
     ])(action.type);
 
-export const article = (state: Article = DEFINITE, action: Action): Article =>
+export const article = (state: Article = Articles.DEFINITE, action: Action): Article =>
     cond<ActionType, Article>([
         [
             equals<ActionType>(ActionType.SetArticle),

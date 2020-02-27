@@ -4,10 +4,6 @@ import { connect, ConnectedProps } from 'react-redux';
 import QuizQuestion from './QuizQuestion';
 
 import {
-    getArticlesForCase,
-} from './prototype';
-
-import {
     RootState
 } from './index';
 

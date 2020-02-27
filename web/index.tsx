@@ -17,10 +17,9 @@ import { Provider } from 'react-redux';
 // My Stuff
 import {
     Case,
-    Gender,
-    DEFINITE,
-} from './prototype';
+} from './types';
 
+import Articles from './Article';
 import './index.css';
 import App from './App';
 
@@ -52,7 +51,7 @@ export const INITIAL_STATE: RootState = {
         recent: [],
     },
     kasus: Case.Nominative,
-    article: DEFINITE,
+    article: Articles.DEFINITE,
 };
 
 const store = createStore(
